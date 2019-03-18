@@ -49,7 +49,7 @@ sess = requests.Session()
 # Run constants
 ################################################################################
 CHANNEL_NAME = "University College of Science and Technology's E-learning Unit (العربيّة)" # Name of channel
-CHANNEL_SOURCE_ID = ""    # Channel's unique id
+CHANNEL_SOURCE_ID = "ucst-elearning"    # Channel's unique id
 CHANNEL_DOMAIN = "https://www.youtube.com/user/CoursesTube/" # Who is providing the content
 CHANNEL_LANGUAGE = "ar"      # Language of channel
 CHANNEL_DESCRIPTION = "تقدم قناة مركز التعليم الإلكتروني في الكلية الجامعية للعلوم والتكنولوجيا مجموعة من الدروس الفعالة والمفيدة لطلاب المرحلة الجامعية في عديد من التخصصات مثل العلوم الطبية والهندسة والبرمجيات وعلوم الحاسوب. كما أنها تحوي مجموعة من الدروس المقدمة لطلبة المرحلة الثانوية في البرمجة."                                  # Description of the channel (optional)
@@ -339,11 +339,10 @@ class UCSTChef(JsonTreeChef):
                     subject.add_node(lesson)
                 grade.add_node(subject)
             channel_tree["children"].append(grade.to_dict())
-        
         return channel_tree
 
     def write_tree_to_json(self, channel_tree):
-        scrape_stage = os.path.join(UCSTChef.TREES_DATA_DIR, 
+        scrape_stage = os.path.join(UCSTChef.TREES_DATA_DIR,
                                 self.RICECOOKER_JSON_TREE)
         write_tree_to_json_tree(scrape_stage, channel_tree)
 
