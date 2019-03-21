@@ -90,11 +90,11 @@ class GradeJsonTree:
         with open(filename, "r") as f:
             grades = json.load(f)
             for grade in grades:
-                grade_obj = GradeNode(grade["title"], grade["source_id"]) 
+                grade_obj = GradeNode(grade["title"], grade["source_id"])
                 if "subjects" in grade:
                     for subject in grade["subjects"]:
-                        subject_obj = SubjectNode(title=subject["title"], 
-                                              source_id=subject["source_id"], 
+                        subject_obj = SubjectNode(title=subject["title"],
+                                              source_id=subject["source_id"],
                                               lang=subject["lang"])
                         subject_obj.auto_generate_lessons(subject["lessons"])
                         grade_obj.add_subject(subject_obj)
@@ -162,7 +162,7 @@ class LessonNode(Node):
 
 
 class YouTubeResourceNode(YouTubeResource, Node):
-    def __init__(self, source_id, name=None, type_name="Youtube", lang="ar", 
+    def __init__(self, source_id, name=None, type_name="Youtube", lang="ar",
             embeded=False, section_title=None):
         if embeded is True:
             source_id = YouTubeResourceNode.transform_embed(source_id)
