@@ -291,12 +291,13 @@ class UCSTChef(JsonTreeChef):
         super(UCSTChef, self).__init__()
 
     def pre_run(self, args, options):
-        channel_tree = self.scrape(args, options)
-        self.write_tree_to_json(channel_tree)
+        #channel_tree = self.scrape(args, options)
+        #self.write_tree_to_json(channel_tree)
+        pass
 
     def lessons(self):
         global CHANNEL_SOURCE_ID
-        self.RICECOOKER_JSON_TREE = 'ricecooker_json_tree_professional.json'
+        self.RICECOOKER_JSON_TREE = 'ricecooker_json_tree.json'
         channel_tree = dict(
                 source_domain=CHANNEL_DOMAIN,
                 source_id=CHANNEL_SOURCE_ID,
