@@ -58,7 +58,16 @@ class GradeJsonTree:
                         grade_obj.add_subject(subject_obj)
                     self.grades.append(grade_obj)
                 elif "lessons" in grade:
-                    pass
+                    for lesson in grade["lessons"]:
+                        lesson_obj = self.subject_node(title=lesson,
+                                              source_id=lesson,
+                                              lang=grade["lang"],
+                                              author=author,
+                                              license=license)
+                        lesson_obj.auto_generate_lessons(lesson, 
+                            save_url_to=save_url_to, load_video_list=load_video_list)
+                        grade_obj.add_subject(lesson_obj)
+                    self.grades.append(grade_obj)
 
     def __iter__(self):
         return iter(self.grades)
