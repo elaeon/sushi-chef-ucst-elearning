@@ -124,3 +124,21 @@ def save_response_content(response, destination):
             if chunk:
                 f.write(chunk)
                 f.flush()
+
+
+def modify_nodes(channel_tree, modify_fn, extra_params):
+    parent = channel_tree["children"]
+    while len(parent) > 0:
+        for children in parent:
+            if children is not None:
+                modify_fn(children, extra_params)
+            #if children is not None and children["source_id"] == source_id:
+            #    return children
+        nparent = []
+        for children in parent:
+            try:
+                if children is not None:
+                    nparent.extend(children["children"])
+            except KeyError:
+                pass
+        parent = nparent

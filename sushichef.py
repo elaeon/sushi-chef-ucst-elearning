@@ -23,7 +23,7 @@ from pressurecooker.youtube import YouTubeResource
 import time
 from urllib.error import URLError
 from urllib.parse import urljoin
-from utils import dir_exists, get_name_from_url, clone_repo, build_path
+from utils import dir_exists, get_name_from_url, clone_repo, build_path, modify_nodes
 from utils import file_exists, get_video_resolution_format, remove_links
 from utils import get_name_from_url_no_ext, get_node_from_channel, get_level_map
 from utils import remove_iframes, get_confirm_token, save_response_content
@@ -59,6 +59,11 @@ CHANNEL_THUMBNAIL = "https://yt3.ggpht.com/a-/AAuE7mAONlA6e6c5gpmCuxIUvfk3-Iegnk
 
 
 
+def alias_fn(node, alias_dict):
+    rename = alias_dict.get(node["title"], None)
+    if rename is not None:
+        node["title"] = rename
+
 
 # The chef subclass
 ################################################################################
@@ -70,8 +75,16 @@ class UCSTChef(JsonTreeChef):
         super(UCSTChef, self).__init__()
 
     def pre_run(self, args, options):
+        rename_nodes = bool(int(options.get('--rename_nodes', "1")))
         channel_tree = self.scrape(args, options)
         self.write_tree_to_json(channel_tree)
+        if file_exists("alias.json") and rename_nodes is True:
+            with open("alias.json", "r") as f:
+                alias_dict = json.load(f)
+            with open(os.path.join(UCSTChef.TREES_DATA_DIR, "ricecooker_json_tree.json"), "r") as f:
+                channel_tree = json.load(f)
+            modify_nodes(channel_tree, alias_fn, alias_dict)
+            self.write_tree_to_json(channel_tree)
 
     def scrape(self, args, options):
         download_video = options.get('--download-video', "1")
